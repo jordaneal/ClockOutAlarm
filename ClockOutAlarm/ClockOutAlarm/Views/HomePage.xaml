@@ -2,25 +2,106 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ClockOutAlarm.Views.HomePage"
-             xmlns:local="clr-namespace:ClockOutAlarm">
+             xmlns:local="clr-namespace:ClockOutAlarm" 
+             xmlns:clockVM="clr-namespace:ClockOutAlarm.ViewModels">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Margin="0,40">
             <Label 
-                Text="Welcome to Clock Out Alarm"
-                FontSize="Large"
-                VerticalOptions="CenterAndExpand" 
                 TextColor="Black"
+                Text="Clock Out Alarm"
+                FontSize="Title"
+                FontAttributes="Bold"
                 HorizontalOptions="CenterAndExpand" />
-            <Button
-                Text="Play Sound"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand"
-                Clicked="OnButtonClicked"/>
+            <Grid VerticalOptions="CenterAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label 
+                    FontAttributes="Italic"
+                    TextColor="Black"
+                    FontSize="Medium"
+                    Text="Current Time: " 
+                    Grid.Column="0"
+                    Margin="50,0,0,0" />
+                <Label 
+                    FontAttributes="Italic"
+                    TextColor="Black"
+                    Margin="0,0,50,0"
+                    Grid.Column="1"
+                    Text="{Binding DateTime, StringFormat='{0:T}'}"
+                    FontSize="Medium" >
+                    <Label.BindingContext>
+                        <clockVM:ClockViewModel />
+                    </Label.BindingContext>
+                </Label>
+            </Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TimePicker
+                    Margin="30,0"
+                    TextColor="Black"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    x:Name="_timePicker"
+                    Time="{Binding SelectedTime}"
+                    Format="hh:mm tt"
+                    PropertyChanged="OnTimePickerPropertyChanged" >
+                </TimePicker>
+                <Label 
+                    FontAttributes="Bold"
+                    Text="Click Time to Change" 
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    TextColor="Black"
+                    Margin="30, 0"
+                    FontSize="Medium"
+                    HorizontalOptions="CenterAndExpand"/>
+                <Label 
+                    FontAttributes="Bold"
+                    Text="Green = On" 
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    TextColor="Black"
+                    Margin="30, 0"
+                    FontSize="Medium"
+                    HorizontalOptions="CenterAndExpand"/>
+                <Switch 
+                    ThumbColor="DimGray"
+                    OnColor="Green"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    IsToggled="{Binding IsOwned, Mode=TwoWay}"
+                    Toggled="Handle_Toggled"
+                    Margin="50,0" />
+                <!--<Label 
+                    TextColor="Black"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="3:30 PM"
+                    FontSize="Large"
+                    Padding="0"
+                    Margin="50, 0">
+                    <Label.BindingContext>
+                        <clockVM:ClockViewModel />
+                    </Label.BindingContext>
+                </Label>-->
+            </Grid>
             <Image 
                 Source="{local:ImageResource ClockOutAlarm.Resources.alarmClock.jpg}" 
                 Aspect="Fill"
-                HeightRequest="{OnPlatform iOS=300, Android=250}"
-                WidthRequest="{OnPlatform iOS=300, Android=250}"
+                HeightRequest="{OnPlatform iOS=300, Android=350}"
+                WidthRequest="{OnPlatform iOS=300, Android=350}"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand" />
         </StackLayout>
